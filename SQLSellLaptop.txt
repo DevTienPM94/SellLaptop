@@ -1,0 +1,137 @@
+create database SellLaptop
+Go
+Use SellLaptop
+Go
+Create table Banner (
+	BannerId int primary key identity,
+	BannerName nvarchar(250) null,
+	LinkImage nvarchar(250) null,
+	IsActive bit null
+)
+Go
+Create table Category(
+	CategoryId int primary key identity,
+	CategoryName nvarchar(250) null,
+	IsActive bit null
+)
+Go
+Create table Brand(
+	BrandId int primary key identity,
+	BrandName nvarchar(250) null,
+	IsActive bit null
+)
+Create table Product(
+	ProductId int primary key identity,
+	ProductName nvarchar(250) null,
+	Quantity int null,
+	Price float null,
+	ProductImage nvarchar(250) null,
+	CategoryId int not null,
+	BrandId int not null,
+	CommentId int not null,
+	SellDate datetime null,
+	IsActive bit null
+)
+Go
+Create table Account (
+	AccountId int primary key identity,
+	AccountName nvarchar(250) null,
+	Password nvarchar(250) null,
+	Phone varchar(250) null,
+	Email varchar(250) null,
+	Address nvarchar(250) null,
+	BankInformation nvarchar(250) null,
+	IsActive bit null
+)
+Go
+Create table Comment(
+	CommentId int primary key identity,
+	Title nvarchar(250) null,
+	AccountId int null,
+	Content nvarchar(250) null,
+	IsActive bit null
+)
+Go
+Create table Cart(
+	CartId int primary key identity,	
+	AccountId int null,
+	ProductId int null,
+	ProductQuantity int null,
+	ProductPrice float null
+)
+Go
+Create table OrderTicket(
+	OrderTicketId int primary key identity,	
+	AccountId int null,
+	CreatedDate datetime null,
+	PaymentType nvarchar(250) null,
+	AccountPhone varchar(250) null,
+	AccountAddress nvarchar(250) null,
+	AccountBankInformation nvarchar(250) null,
+	TotalPrice float null
+)
+Create table OrderTicketDetail(
+	OrderTicketDetail int primary key identity,
+	OrderTicketId int not null,	
+	ProductId int null,
+	ProductName int null,
+	ProductQuantity int null,
+	ProductPrice float null,
+	TotalPrice float null
+)
+
+create proc Category_GetAll
+as
+begin
+	select * from Category
+end
+go
+create proc Category_GetById
+@id int
+as
+begin
+	select * from Category where CategoryId = @id
+end
+go
+create proc Category_Insert
+@name nvarchar(250),
+@isActive bit
+as
+begin
+	insert into Category values(@name,@isActive)
+end
+go
+create proc Category_Delete
+@id int
+as
+begin
+	delete from Category where CategoryId = @id
+end
+go
+create proc Category_Update
+	@id int,
+	@name nvarchar(250),
+	@isActive bit
+as
+begin
+	update Category set CategoryName = @name, IsActive = @isActive
+	where CategoryId = @id
+end
+go
+create proc Category_Search
+@name nvarchar(250)
+as
+begin
+	select * from Category where CategoryName like '%'+ @name + '%'
+end
+go
+--Category_GetAll
+--Category_GetById 2
+--Category_Insert 'Ram',1
+--Category_Delete 4
+--Category_Update 3,'call',0
+--Category_Search 'o'
+go
+insert into Category  values
+('Laptop',1),
+('Head Phone',2)
